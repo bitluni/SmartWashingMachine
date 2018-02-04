@@ -46,10 +46,11 @@ function setup()
   }
 }
 
-function refeshServerState()
+function refreshServerState()
 {
   for(let i = 0; i < photoresistorGpios.length; i++)
   {
+    let pin = photoresistorGpios[i];
     let newState = GPIO.read(pin);
     oldState[pin] = newState;
     MQTT.pub(baseTopic + photoresistorName[i], JSON.stringify(newState), 1);
@@ -87,7 +88,7 @@ MQTT.setEventHandler(function(conn, ev, edata)
 		{
 				if(subbed) //check if already subbed
 				{
-					refeshServerState();
+					refreshServerState();
 					return;	
 				}
 				print('Connected first time -> subbing');
